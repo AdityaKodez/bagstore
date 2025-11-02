@@ -3,280 +3,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecommerce website</title>
+    <title>Luxe Leather | Contemporary Bags for Slow Living</title>
     <link rel="shortcut icon" href="icons8-bag-100.png" type="image/x-icon">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="output.css">
     <style>
-        li{
-            margin: 10px;
+        :root {
+            color-scheme: light;
         }
-        body{
-          margin: 0;
-          padding: 0;
-          padding: 4px;
-            color:black;
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f6f4f0;
         }
-        @media (min-width: 1024px) {
-            .product-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
-            }
-            .carousel-controls {
-                display: none;
-            }
-
+        img {
+            display: block;
+            max-width: 100%;
         }
-   
-        h1{
-            font-size:2.5rem;
+        .cart-drawer {
+            transform: translateX(100%);
         }
-        img{
-            mix-blend-mode: multiply;
+        .cart-drawer.open {
+            transform: translateX(0);
         }
-        *{
-        box-sizing: border-box;
+        .cart-backdrop {
+            opacity: 0;
+            pointer-events: none;
         }
-        @keyframes moveLeftToRight {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+        .cart-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
         }
-        @keyframes moveRightToLeft {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .animate-ltr {
-            animation: moveLeftToRight 20s linear infinite;
-        }
-        .animate-rtl {
-            animation: moveRightToLeft 20s linear infinite;
-        }
-        .nav-cart {
-            position:fixed;
-            top:0;
-            right:-100%;
-            width:50vh;
-            height:102vh;
-            background-color: white;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-            transition: right 0.3s ease-in-out;
-            z-index: 1000;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .nav-cart.open {
-            right: 0;
-          
-      
-        }
-      .click{
-     visibility: visible;
-     position: absolute;
-     top:50%;
-     left: 50%;
-     transform: translate(-50%, -50%)
-      }
-      
-        .cart-item {
+        .marquee-track {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            gap: 3.5rem;
+            animation: marquee 28s linear infinite;
         }
-
-        .cart-item img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            margin-right: 10px;
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
         }
-
-        .popup {
-            position: fixed;
-            bottom:20px;
-            right: 20px;
-            background-color:black;
-            color: white;
-            padding: 10px 20px;
-            display: none;
-            z-index: 1001;
-        }
-
-        .checkout-modal {
-            display: none;
-            position:fixed;
-            z-index: 1002;
-            left:0;
-            top:0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        .checkout-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            position: absolute;
-
-top: 40%;
-
-left: 50%;
-
-transform: translate(-50%, -50%);
-            font-family:"poppins" 'sans-serif';
-            max-width: 500px;
-          
-        }
-        #checkoutBtn {
-            margin-top: auto;
-            width:100%;
-            padding: 10px;
-            background-color:rgb(199, 199, 199);
-            color: rgb(22, 22, 22);
-            border: none;
-            cursor: pointer;
-            position:sticky;
-            bottom:0vh;
-
-          border-radius:20px;
-        }
-        #checkoutBtn:hover {
-            color:white;
-            background-color: black;
-        }
-
     </style>
 </head>
-<body>
-    <div class="container w-[100vw] bg-white">
-      <nav class="navbar flex justify-between items-center px-4 py-2">
-      <div class="logo flex">
-          <img src="bag.svg" alt="logo"><span class="font-extrabold">BAG STORE</span>
-      </div>
-      <div class="nav-links">
-          <button id="cartBtn" class="px-4 py-2 bg-gray-200 rounded-full">
-              <i class='bx bx-cart'></i> Cart (<span id="cartCount">0</span>)
-          </button>
-      </div>
-  </nav>
-
-         <div class="page1 ml-4 mr-4">
-            <div class="page1-top h-[76vh]  m-3 p-4  bg-gray-300 rounded-lg relative">
-                <div class="title flex-col justify-center">
-                    <h1 class="font-[400] font-poppins text-black text-[4vh] max-sm:text-[3vh]">Best Leather Bag</h1>
-                <h1 class="ml-3 font-poppins text-black text-[4vh] mb-3 max-sm:text-[3vh]"> Collection For You</h1>
+<body class="bg-[#f6f4f0] text-slate-900 selection:bg-brown-500 selection:text-white">
+    <div class="relative min-h-screen overflow-x-hidden">
+        <header class="relative overflow-hidden bg-gradient-to-br from-[#1f130d] via-[#2d1c14] to-[#120b08] text-white">
+            <div class="pointer-events-none absolute inset-0">
+                <div class="absolute -left-24 top-24 h-72 w-72 rounded-full bg-[#d1a079]/30 blur-[120px]"></div>
+                <div class="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-[#8f5933]/40 blur-[160px]"></div>
+            </div>
+            <nav class="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6">
+                <div class="flex items-center gap-3">
+                    <img src="bag.svg" alt="Bag Studio logo" class="h-10 w-10">
+                    <div>
+                        <span class="block text-xs uppercase tracking-[0.4em] text-white/50">Bag Studio</span>
+                        <span class="block text-lg font-semibold">Luxe Leather</span>
+                    </div>
                 </div>
-                <div class="subtitle mt-3">
-                    <p class="font-thin text-gray-500 font-open flex gap-1 text-sm"><img src="arrow.svg" class="h-7 block" alt="">discover the epitome of style and craftmanship with our curated leather bag Collection</p>
-                    <button onclick="addToCart('Best Leather Bag', 450, 'leath.png')" class=" text-gray-600 px-4 py-1 mt-4 rounded-[40px] border-2 border-gray-600 hover:bg-black hover:text-white transition-all flex items-center font-open">
-                       Add to cart  <i class='bx bx-right-arrow-alt text-2xl ml-2' ></i>
+                <div class="hidden items-center gap-10 text-sm font-semibold text-white/70 md:flex">
+                    <a href="#collection" class="transition hover:text-white">Collection</a>
+                    <a href="#story" class="transition hover:text-white">Story</a>
+                    <a href="#journal" class="transition hover:text-white">Journal</a>
+                    <a href="#contact" class="transition hover:text-white">Contact</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="cartBtn" class="flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                        <i class='bx bx-shopping-bag text-xl'></i>
+                        <span class="hidden sm:inline">Cart</span>
+                        <span id="cartCount" class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-xs font-bold uppercase tracking-wide text-slate-900">0</span>
                     </button>
+                    <a href="#collection" class="hidden rounded-full bg-white px-5 py-2 text-sm font-semibold text-slate-900 transition hover:bg-[#f0c9a5] hover:text-slate-900 md:inline-flex">Shop now</a>
                 </div>
-                <div class="img flex justify-center align-baseline">
-                    <img src="leath.png" class="h-[30vh] mt-7" alt="bag ka img">
+            </nav>
+            <div class="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-12 sm:px-6 md:grid-cols-[1.2fr_1fr] md:pb-24 md:pt-16">
+                <div class="space-y-8">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/70">New Season</span>
+                    <h1 class="font-poppins text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl">Elevate your everyday carry</h1>
+                    <p class="max-w-xl text-base leading-relaxed text-white/70">Discover full-grain leather silhouettes handcrafted in Florence. Each piece blends architectural lines with enduring softness, designed for those who pause for the details.</p>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <button onclick="addToCart('Vintage Leather Backpack', 129.99, 'images/bag8.jpg')" class="inline-flex items-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-[#f0c9a5]">
+                            <i class='bx bx-plus-circle text-lg'></i>
+                            Add featured bag
+                        </button>
+                        <a href="#collection" class="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                            Explore collection
+                            <i class='bx bx-right-arrow-alt text-lg'></i>
+                        </a>
+                    </div>
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <div class="flex items-center gap-3">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10"><i class='bx bx-leaf text-xl'></i></span>
+                            <div>
+                                <p class="text-lg font-semibold text-white">Vegetable-tanned</p>
+                                <p class="text-xs text-white/60">Responsibly sourced hides</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10"><i class='bx bx-time text-xl'></i></span>
+                            <div>
+                                <p class="text-lg font-semibold text-white">Built to age</p>
+                                <p class="text-xs text-white/60">Patina that tells your story</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10"><i class='bx bx-world text-xl'></i></span>
+                            <div>
+                                <p class="text-lg font-semibold text-white">Global shipping</p>
+                                <p class="text-xs text-white/60">Carbon-neutral delivery</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10"><i class='bx bx-shield-quarter text-xl'></i></span>
+                            <div>
+                                <p class="text-lg font-semibold text-white">Lifetime care</p>
+                                <p class="text-xs text-white/60">Complimentary repairs</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="product-price absolute bottom-[40vh] right-6">
-                    <h2 class="font-semibold text-gray-600 font-open tet-2xl">Price</h2>
-                    <h1 class="font-bold text-sm">$450</h1>
+                <div class="relative">
+                    <div class="absolute -left-8 top-8 hidden h-24 w-24 rounded-full bg-white/10 blur-3xl md:block"></div>
+                    <div class="relative mx-auto max-w-sm rounded-[2.5rem] border border-white/20 bg-white/10 p-6 shadow-[0_30px_90px_rgba(15,10,8,0.4)] backdrop-blur-md">
+                        <div class="rounded-[2rem] bg-white p-6 shadow-xl">
+                            <img src="images/bag5.webp" alt="Featured leather backpack" class="mx-auto h-72 w-full object-contain">
+                        </div>
+                        <div class="mt-6 flex items-center justify-between text-sm text-white/80">
+                            <div>
+                                <p class="text-xs uppercase tracking-[0.4em] text-white/50">Featured piece</p>
+                                <p class="text-base font-semibold text-white">Vintage Leather Backpack</p>
+                            </div>
+                            <span class="text-lg font-semibold text-[#f0c9a5]">$129.99</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="page1-bottom">
-               <div class="title w-full flex justify-center mb-5">
-                <h1 class="font-[400] font-poppins text-3xl">We Supported By</h1>
-               </div>
-               <div class="grid grid-cols-4 gap-2">
-                <div class="flex items-center justify-center p-1 bg-gray-200 rounded-lg shadow">
-                    <img src="images/nike.jpg" alt="Nike Logo" class="h-[12vh] w-[15vh] sm:h-10 sm:w-auto">
+        </header>
+
+        <main class="relative z-10 -mt-16 pb-24">
+            <section class="mx-auto grid max-w-6xl gap-6 px-4 sm:px-6 md:grid-cols-3">
+                <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                    <span class="text-xs font-semibold uppercase tracking-[0.4em] text-brown-500">Craft</span>
+                    <h3 class="mt-4 text-xl font-semibold text-slate-900">Hand stitched in small batches</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-600">Our ateliers craft no more than 40 pieces each week, preserving the attention to detail modern luxury deserves.</p>
+                </article>
+                <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                    <span class="text-xs font-semibold uppercase tracking-[0.4em] text-brown-500">Materials</span>
+                    <h3 class="mt-4 text-xl font-semibold text-slate-900">Full-grain, responsibly sourced</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-600">We partner with family-owned tanneries that champion vegetable tanning and closed-loop water systems.</p>
+                </article>
+                <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                    <span class="text-xs font-semibold uppercase tracking-[0.4em] text-brown-500">Experience</span>
+                    <h3 class="mt-4 text-xl font-semibold text-slate-900">From studio to doorstep</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-600">Tracked, carbon-neutral shipping to over 60 countries with bespoke unboxing designed for reuse.</p>
+                </article>
+            </section>
+
+            <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+                <p class="text-center text-xs uppercase tracking-[0.5em] text-slate-400">Seen in</p>
+                <div class="relative mt-6 overflow-hidden rounded-full border border-slate-200 bg-white/70 py-4 backdrop-blur">
+                    <div class="marquee-track">
+                        <img src="images/nike.jpg" alt="Nike" class="h-8 w-auto opacity-70">
+                        <img src="images/bmw.webp" alt="BMW" class="h-8 w-auto opacity-70">
+                        <img src="images/ebay.webp" alt="eBay" class="h-8 w-auto opacity-70">
+                        <img src="images/mapple.jpg" alt="Mapple" class="h-8 w-auto opacity-70">
+                        <img src="images/channel.webp" alt="Chanel" class="h-8 w-auto opacity-70">
+                        <img src="images/mc.webp" alt="Mc" class="h-8 w-auto opacity-70">
+                        <img src="images/coca.webp" alt="Coca Cola" class="h-8 w-auto opacity-70">
+                        <img src="images/nike.jpg" alt="Nike" class="h-8 w-auto opacity-70">
+                        <img src="images/bmw.webp" alt="BMW" class="h-8 w-auto opacity-70">
+                        <img src="images/ebay.webp" alt="eBay" class="h-8 w-auto opacity-70">
+                        <img src="images/mapple.jpg" alt="Mapple" class="h-8 w-auto opacity-70">
+                        <img src="images/channel.webp" alt="Chanel" class="h-8 w-auto opacity-70">
+                        <img src="images/mc.webp" alt="Mc" class="h-8 w-auto opacity-70">
+                        <img src="images/coca.webp" alt="Coca Cola" class="h-8 w-auto opacity-70">
+                    </div>
                 </div>
-                <div class="flex items-center justify-center p-2 bg-gray-200 rounded-lg shadow">
-                    <img src="images/bmw.webp" alt="Etsy Logo" class="h-[12vh] w-auto">
+            </section>
+
+            <section id="collection" class="mx-auto mt-20 max-w-6xl px-4 sm:px-6">
+                <div class="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+                    <div class="max-w-3xl">
+                        <p class="text-xs uppercase tracking-[0.4em] text-brown-500">Our Collection</p>
+                        <h2 class="mt-2 font-poppins text-3xl font-semibold text-slate-900 sm:text-4xl">Carry the art of slow luxury</h2>
+                        <p class="mt-3 text-base leading-relaxed text-slate-600">Explore our considered edit of timeless silhouettes—architectural totes, structured backpacks, and effortless crossbody companions crafted to travel with you for decades.</p>
+                    </div>
+                    <a href="#story" class="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-semibold text-slate-900 transition hover:border-brown-500 hover:text-brown-600">
+                        Discover our process
+                        <i class='bx bx-right-arrow-alt text-lg'></i>
+                    </a>
                 </div>
-                <div class="flex items-center justify-center p-2 bg-gray-200 rounded-lg shadow">
-                    <img src="images/ebay.webp" alt="Reebok Logo" class="h-[12vh] w-auto">
+                <div class="product-grid mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"></div>
+            </section>
+
+            <section id="story" class="mx-auto mt-24 flex max-w-6xl flex-col gap-12 px-4 sm:px-6 lg:grid lg:grid-cols-[1.1fr_0.9fr]">
+                <div class="relative overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white shadow-xl">
+                    <img src="leath2.PNG" alt="Artisans at work" class="h-full w-full object-cover">
                 </div>
-                <div class="flex items-center justify-center p-2 bg-gray-200 rounded-lg shadow">
-                    <img src="images/mapple.jpg" alt="Puma Logo" class="h-[12vh] w-auto">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.4em] text-brown-500">Our Story</p>
+                    <h3 class="mt-4 font-poppins text-3xl font-semibold text-slate-900">Slow made, future minded</h3>
+                    <p class="mt-4 text-base leading-relaxed text-slate-600">From selecting hides to burnishing edges, each step is guided by intention. We collaborate with fourth-generation artisans near Florence who honour traditional techniques while embracing modern sustainability benchmarks.</p>
+                    <div class="mt-8 grid gap-6 sm:grid-cols-2">
+                        <div class="rounded-3xl border border-slate-200 bg-white p-5">
+                            <h4 class="text-lg font-semibold text-slate-900">Located in Florence</h4>
+                            <p class="mt-2 text-sm text-slate-600">Our atelier overlooks the Arno River, where every pattern is cut by hand to minimise waste.</p>
+                        </div>
+                        <div class="rounded-3xl border border-slate-200 bg-white p-5">
+                            <h4 class="text-lg font-semibold text-slate-900">Lifetime stewardship</h4>
+                            <p class="mt-2 text-sm text-slate-600">Complimentary conditioning and repairs keep each piece evolving with its owner.</p>
+                        </div>
+                    </div>
+                    <div class="mt-10 flex flex-wrap gap-4">
+                        <a href="#collection" class="inline-flex items-center gap-3 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brown-500">
+                            Build your capsule
+                            <i class='bx bx-right-arrow-alt text-lg'></i>
+                        </a>
+                        <button onclick="addToCart('Luxury Tote Bag', 189.99, 'images/bag2.jpg')" class="inline-flex items-center gap-3 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-brown-500 hover:text-brown-600">
+                            Try the tote
+                            <i class='bx bx-plus text-lg'></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mx-auto mt-24 max-w-6xl px-4 sm:px-6">
+                <div class="rounded-[2.5rem] bg-[#1f130d] px-6 py-12 text-white sm:px-10 md:px-16">
+                    <div class="flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
+                        <div class="max-w-xl">
+                            <p class="text-xs uppercase tracking-[0.4em] text-white/60">Testimonials</p>
+                            <h3 class="mt-4 font-poppins text-3xl font-semibold">Loved by modern minimalists</h3>
+                            <p class="mt-4 text-lg leading-relaxed text-white/80">“The Vega tote has become my uniform. Three years in, the leather is even softer and the patina is extraordinary. I’ve stopped chasing trends—this is the piece I carry everywhere.”</p>
+                            <div class="mt-6 flex items-center gap-4">
+                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-lg font-semibold">AL</div>
+                                <div>
+                                    <p class="text-base font-semibold text-white">Anaïs Laurent</p>
+                                    <p class="text-sm text-white/60">Creative Director, Paris</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid gap-6 sm:grid-cols-2">
+                            <div class="rounded-3xl border border-white/20 bg-white/5 p-6">
+                                <p class="text-3xl font-semibold text-white">93%</p>
+                                <p class="mt-2 text-sm text-white/70">of customers return for a second piece within a year.</p>
+                            </div>
+                            <div class="rounded-3xl border border-white/20 bg-white/5 p-6">
+                                <p class="text-3xl font-semibold text-white">600+</p>
+                                <p class="mt-2 text-sm text-white/70">Five-star reviews celebrating craftsmanship and longevity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="journal" class="mx-auto mt-24 max-w-6xl px-4 sm:px-6">
+                <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.4em] text-brown-500">Journal</p>
+                        <h3 class="mt-3 font-poppins text-3xl font-semibold text-slate-900">Notes from the studio</h3>
+                        <p class="mt-3 max-w-2xl text-base leading-relaxed text-slate-600">Slow rituals, care tutorials, and conversations with the community shaping tomorrow’s heirlooms.</p>
+                    </div>
+                    <a href="#contact" class="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-semibold text-slate-900 transition hover:border-brown-500 hover:text-brown-600">
+                        Read all updates
+                        <i class='bx bx-right-arrow-alt text-lg'></i>
+                    </a>
+                </div>
+                <div class="mt-12 grid gap-6 md:grid-cols-3">
+                    <article class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                        <p class="text-xs uppercase tracking-[0.4em] text-slate-400">Care — May 2024</p>
+                        <h4 class="mt-4 text-xl font-semibold text-slate-900">How to care for full-grain leather</h4>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">Our artisans share three simple rituals to preserve suppleness and encourage a rich patina.</p>
+                        <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brown-500">
+                            Read more
+                            <i class='bx bx-right-arrow-alt text-lg'></i>
+                        </span>
+                    </article>
+                    <article class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                        <p class="text-xs uppercase tracking-[0.4em] text-slate-400">Design — Apr 2024</p>
+                        <h4 class="mt-4 text-xl font-semibold text-slate-900">Inside the atelier: the Vega tote</h4>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">Sketches to final stitch—the story behind our most-loved silhouette and its modular interior.</p>
+                        <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brown-500">
+                            Read more
+                            <i class='bx bx-right-arrow-alt text-lg'></i>
+                        </span>
+                    </article>
+                    <article class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                        <p class="text-xs uppercase tracking-[0.4em] text-slate-400">Community — Mar 2024</p>
+                        <h4 class="mt-4 text-xl font-semibold text-slate-900">A capsule wardrobe for movement</h4>
+                        <p class="mt-3 text-sm leading-relaxed text-slate-600">Stylist Hana Kim curates pieces that pair with our messenger bag for life on the move.</p>
+                        <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brown-500">
+                            Read more
+                            <i class='bx bx-right-arrow-alt text-lg'></i>
+                        </span>
+                    </article>
+                </div>
+            </section>
+
+            <section id="contact" class="mx-auto mt-24 max-w-6xl px-4 sm:px-6">
+                <div class="relative overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white px-6 py-12 shadow-lg sm:px-10 md:px-16">
+                    <div class="absolute -right-24 top-10 h-56 w-56 rounded-full bg-brown-500/10 blur-[120px]"></div>
+                    <div class="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+                        <div class="max-w-xl">
+                            <p class="text-xs uppercase tracking-[0.4em] text-brown-500">Stay in the loop</p>
+                            <h3 class="mt-4 font-poppins text-3xl font-semibold text-slate-900">Receive studio updates and limited releases</h3>
+                            <p class="mt-3 text-base leading-relaxed text-slate-600">Be the first to know about capsule drops, archive sales, and care workshops. We write only when there’s something meaningful to share.</p>
+                        </div>
+                        <form id="newsletter-form" class="relative flex w-full max-w-md flex-col gap-4">
+                            <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400" for="newsletter-email">Email address</label>
+                            <input id="newsletter-email" type="email" placeholder="you@example.com" class="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brown-500 focus:ring-2 focus:ring-brown-200" required>
+                            <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brown-500">
+                                Join the list
+                                <i class='bx bx-envelope'></i>
+                            </button>
+                            <p class="text-xs text-slate-500">By subscribing you agree to receive occasional emails from us. You can unsubscribe anytime.</p>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-white py-12">
+            <div class="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 md:flex-row md:justify-between">
+                <div class="max-w-sm">
+                    <div class="flex items-center gap-3">
+                        <img src="bag.svg" alt="Bag Studio logo" class="h-10 w-10">
+                        <div>
+                            <span class="block text-xs uppercase tracking-[0.4em] text-slate-400">Bag Studio</span>
+                            <span class="block text-lg font-semibold text-slate-900">Luxe Leather</span>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-sm leading-relaxed text-slate-600">Thoughtfully crafted leather pieces inspired by architecture, guided by sustainability, and made to travel with you for life.</p>
+                    <p class="mt-6 text-xs text-slate-400">© <span id="year"></span> Bag Studio. All rights reserved.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-12 text-sm text-slate-600 md:grid-cols-3">
+                    <div>
+                        <h5 class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Shop</h5>
+                        <ul class="mt-4 space-y-3">
+                            <li><a href="#collection" class="transition hover:text-brown-500">All bags</a></li>
+                            <li><a href="#collection" class="transition hover:text-brown-500">Backpacks</a></li>
+                            <li><a href="#collection" class="transition hover:text-brown-500">Crossbody</a></li>
+                            <li><a href="#collection" class="transition hover:text-brown-500">Limited drops</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Company</h5>
+                        <ul class="mt-4 space-y-3">
+                            <li><a href="#story" class="transition hover:text-brown-500">Our story</a></li>
+                            <li><a href="#journal" class="transition hover:text-brown-500">Journal</a></li>
+                            <li><a href="#contact" class="transition hover:text-brown-500">Stockists</a></li>
+                            <li><a href="#contact" class="transition hover:text-brown-500">Press</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Support</h5>
+                        <ul class="mt-4 space-y-3">
+                            <li><a href="#contact" class="transition hover:text-brown-500">Customer care</a></li>
+                            <li><a href="#contact" class="transition hover:text-brown-500">Repairs</a></li>
+                            <li><a href="#contact" class="transition hover:text-brown-500">Shipping & returns</a></li>
+                            <li><a href="#contact" class="transition hover:text-brown-500">Gift cards</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-         </div>
+        </footer>
+    </div>
 
-    
-
-         <!-- Products Section -->
-         <div class="products-section px-4 py-12 bg-gray-50">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl font-bold text-center mb-2">Our Collection</h2>
-                <p class="text-gray-600 text-center mb-8">Discover our premium selection of leather bags</p>
-                <div class="product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Products will be dynamically inserted here by JavaScript -->
-                </div>
+    <div id="toastContainer" class="fixed bottom-8 right-6 z-50 flex w-72 flex-col gap-3"></div>
+    <div id="cartBackdrop" class="cart-backdrop fixed inset-0 z-40 bg-black/40 transition-opacity duration-300 ease-out"></div>
+    <aside id="cartDrawer" class="cart-drawer fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-white shadow-2xl transition-transform duration-300 ease-out">
+        <div class="flex items-center justify-between border-b border-slate-100 px-6 py-5">
+            <div>
+                <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Your cart</p>
+                <h2 class="text-xl font-semibold text-slate-900">Selected pieces</h2>
             </div>
-         </div>
-
-         <div class="w-full bg-slate-300 rounded-lg shadow-md overflow-hidden mt-5 ">
-              <div class="relative h-24">
-                  <div class="absolute top-0 left-0 right-0 h-12 overflow-hidden">
-                      <div class="animate-ltr whitespace-nowrap py-3">
-                          <span class="inline-flex items-center">
-                              GET 20% OFF COUPON "BAG20" 
-                              <span class="inline-block w-5 h-5 bg-brown-500 mx-2"></span>
-                              GET 20% OFF COUPON "BAG20" 
-                              <span class="inline-block w-5 h-5 bg-brown-500 mx-2"></span>
-                              GET 20% OFF COUPON "BAG20" 
-                              <span class="inline-block w-5 h-5 bg-brown-500 mx-2"></span>
-                          </span>
-                      </div>
-                  </div>
-                  <div class="absolute bottom-0 left-0 right-0 h-12 overflow-hidden">
-                      <div class="animate-rtl whitespace-nowrap py-3">
-                          <span class="inline-flex items-center">
-                              GET 20% OFF COUPON "BAG20" 
-                              <span class="inline-block w-5 h-5 bg-green-500 mx-2"></span>
-                              GET 20% OFF COUPON "BAG20" 
-                              <span class="inline-block w-5 h-5 bg-green-500 mx-2"></span>
-                              GET 20% OFF COUPON "BAG20" 
-                              <span class="inline-block w-5 h-5 bg-green-500 mx-2"></span>
-                          </span>
-                      </div>
-                  </div>
-              </div>
-          </div>
-
-        <div class="nav-cart " id="navCart">
-         <p id="closeCartBtn" class=" px-3 py-2 bg-gray-300 text-gray-500 absolute top-4 right-4 cursor-pointer rounded-md">X</p>
-          <h2 class="text-xl font-bold mb-4">Your Cart</h2>
-          <div id="cartItems"></div>
-          <div class="mt-4">
-              <p>Total: $<span id="cartTotal">0.00</span></p>
-          </div>
-          <button id="checkoutBtn">Checkout</button>
-      </div>
-
-        <div id="checkoutModal" class="checkout-modal flex justify-center items-center ">
-            <div class="checkout-content invisible p-4 rounded-sm bg-gray-200x" id="checkoutContent">
-                <h2 class="text-xl font-bold mb-4">Thank you for shopping!</h2>
-                <p>Your order has been placed successfully.</p>
-            </div>
+            <button id="closeCartBtn" class="rounded-full bg-slate-100 p-2 text-slate-500 transition hover:bg-slate-200">
+                <i class='bx bx-x text-2xl'></i>
+            </button>
         </div>
-    </div>
+        <div id="cartItems" class="flex-1 space-y-6 overflow-y-auto px-6 py-6"></div>
+        <div class="border-t border-slate-100 px-6 py-6">
+            <div class="flex items-center justify-between text-base font-semibold text-slate-900">
+                <span>Total</span>
+                <span id="cartTotal">$0.00</span>
             </div>
-    </div>
-    <div class="nav-cart">
-        <!-- Cart content will be dynamically inserted here -->
-    </div>
-
-    <div class="popup">
-        <!-- Popup notifications will be dynamically inserted here -->
-    </div>
+            <button id="checkoutBtn" class="mt-4 w-full rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brown-500">Checkout</button>
+        </div>
+    </aside>
 
     <script src="main.js"></script>
-
 </body>
 </html>
